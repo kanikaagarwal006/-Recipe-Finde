@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Recipe Finder | API Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">Global<span>RecipeFinder</span></div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="loadAllRecipes()">🌍 All Recipes</a></li>
+                <li><a href="#" onclick="loadIndianDishes()">🇮🇳 Indian</a></li>
+                <li><a href="#" onclick="loadRandomRecipe()">🎲 Random</a></li>
+            </ul>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Discover <span class="highlight">Delicious Recipes</span></h1>
+            <p>Search by ingredient or browse cuisines to find your next favorite meal</p>
+        </section>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" 
+                       placeholder="e.g., chicken, paneer, rice, pasta..." value="chicken">
+                <button class="search-btn" onclick="searchIndianDish()">🔍 Search Recipes</button>
+            </div>
+            
+            <!-- Categories in search section -->
+            <div class="categories">
+                <button class="category-pill" onclick="loadAllRecipes()">🌍 All Cuisines</button>
+                <button class="category-pill" onclick="loadIndianDishes()">🇮🇳 Indian</button>
+                <button class="category-pill" onclick="loadCuisine('Italian')">🇮🇹 Italian</button>
+                <button class="category-pill" onclick="loadCuisine('Chinese')">🇨🇳 Chinese</button>
+                <button class="category-pill" onclick="loadCuisine('Mexican')">🇲🇽 Mexican</button>
+                <button class="category-pill" onclick="loadCuisine('Japanese')">🇯🇵 Japanese</button>
+                <button class="category-pill" onclick="loadCuisine('Thai')">🇹🇭 Thai</button>
+                <button class="category-pill" onclick="loadCuisine('French')">🇫🇷 French</button>
+            </div>
+
+            <!-- Indian ingredient quick search -->
+            <div style="margin-top: 30px; text-align: center;">
+                <p style="color: #666; margin-bottom: 10px; font-weight: 600;">🇮🇳 Quick Indian Ingredients:</p>
+                <div class="categories" style="justify-content: center;">
+                    <button class="category-pill" onclick="searchIndianDish('chicken')">🍗 Chicken</button>
+                    <button class="category-pill" onclick="searchIndianDish('paneer')">🧀 Paneer</button>
+                    <button class="category-pill" onclick="searchIndianDish('lentils')">🫘 Dal</button>
+                    <button class="category-pill" onclick="searchIndianDish('rice')">🍚 Rice</button>
+                    <button class="category-pill" onclick="searchIndianDish('potato')">🥔 Aloo</button>
+                    <button class="category-pill" onclick="searchIndianDish('spinach')">🌿 Saag</button>
+                    <button class="category-pill" onclick="searchIndianDish('fish')">🐟 Fish</button>
+                    <button class="category-pill" onclick="searchIndianDish('mutton')">🐑 Mutton</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Grid -->
+        <div id="results" class="results-grid">
+            <!-- Results will be displayed here -->
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Data provided by TheMealDB </p>
+        </div>
+    </div>
+
+    <!-- Recipe Modal -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <!-- Modal content will be loaded here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
