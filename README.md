@@ -31,7 +31,7 @@ A beautiful, responsive web application to discover authentic Indian recipes usi
 ---
 ## 🚀 Live Demo
 
-🔗 **https://kanikaagarwal006.github.io/indian-recipe-finder**
+🔗 https://kanikaagarwal006.github.io/-Recipe-Finde/
 
 
 ---
