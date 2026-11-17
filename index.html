@@ -3,80 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Recipe Finder | API Project</title>
+    <title>Spice Route | Indian & Global Recipe Discovery</title>
+    <meta name="description" content="Search authentic Indian recipes by ingredient with step-by-step instructions and video tutorials, powered by TheMealDB API.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍛</text></svg>">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Navbar -->
         <nav class="navbar">
-            <div class="logo">Global<span>RecipeFinder</span></div>
+            <div class="logo">
+                <span class="logo-icon">🍛</span> Spice<span>Route</span>
+            </div>
+
             <ul class="nav-links">
-                <li><a href="#" onclick="loadAllRecipes()">🌍 All Recipes</a></li>
-                <li><a href="#" onclick="loadIndianDishes()">🇮🇳 Indian</a></li>
-                <li><a href="#" onclick="loadRandomRecipe()">🎲 Random</a></li>
+                <li><a href="#" onclick="loadGlobalMix(); return false;">🌍 Global Feast</a></li>
+                <li><a href="#" onclick="loadCuisine('Indian'); return false;">🇮🇳 Indian Treasury</a></li>
+                <li><a href="#" onclick="loadRandomRecipe(); return false;">🎲 Surprise Me</a></li>
             </ul>
         </nav>
 
-        <!-- Hero Section -->
         <section class="hero">
-            <h1>Discover <span class="highlight">Delicious Recipes</span></h1>
-            <p>Search by ingredient or browse cuisines to find your next favorite meal</p>
+            <h1>Discover <span class="highlight">Authentic Indian Flavors</span> & Global Gems</h1>
+            <p>Explore recipes from around the world — from rich butter chicken to delicious curries.</p>
         </section>
 
-        <!-- Search Section -->
-        <div class="search-section">
+        <section class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" 
-                       placeholder="e.g., chicken, paneer, rice, pasta..." value="chicken">
-                <button class="search-btn" onclick="searchIndianDish()">🔍 Search Recipes</button>
-            </div>
-            
-            <!-- Categories in search section -->
-            <div class="categories">
-                <button class="category-pill" onclick="loadAllRecipes()">🌍 All Cuisines</button>
-                <button class="category-pill" onclick="loadIndianDishes()">🇮🇳 Indian</button>
-                <button class="category-pill" onclick="loadCuisine('Italian')">🇮🇹 Italian</button>
-                <button class="category-pill" onclick="loadCuisine('Chinese')">🇨🇳 Chinese</button>
-                <button class="category-pill" onclick="loadCuisine('Mexican')">🇲🇽 Mexican</button>
-                <button class="category-pill" onclick="loadCuisine('Japanese')">🇯🇵 Japanese</button>
-                <button class="category-pill" onclick="loadCuisine('Thai')">🇹🇭 Thai</button>
-                <button class="category-pill" onclick="loadCuisine('French')">🇫🇷 French</button>
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Search by ingredient (e.g. chicken, paneer, coconut, rice)"
+                    value="chicken"
+                    aria-label="Search recipes by ingredient"
+                >
+                <button class="search-btn" onclick="performIngredientSearch()">
+                    🔍 Discover Recipes
+                </button>
             </div>
 
-            <!-- Indian ingredient quick search -->
-            <div style="margin-top: 30px; text-align: center;">
-                <p style="color: #666; margin-bottom: 10px; font-weight: 600;">🇮🇳 Quick Indian Ingredients:</p>
-                <div class="categories" style="justify-content: center;">
-                    <button class="category-pill" onclick="searchIndianDish('chicken')">🍗 Chicken</button>
-                    <button class="category-pill" onclick="searchIndianDish('paneer')">🧀 Paneer</button>
-                    <button class="category-pill" onclick="searchIndianDish('lentils')">🫘 Dal</button>
-                    <button class="category-pill" onclick="searchIndianDish('rice')">🍚 Rice</button>
-                    <button class="category-pill" onclick="searchIndianDish('potato')">🥔 Aloo</button>
-                    <button class="category-pill" onclick="searchIndianDish('spinach')">🌿 Saag</button>
-                    <button class="category-pill" onclick="searchIndianDish('fish')">🐟 Fish</button>
-                    <button class="category-pill" onclick="searchIndianDish('mutton')">🐑 Mutton</button>
+            <div class="categories category-row">
+                <button class="category-pill active-pill" data-cuisine="Global" onclick="loadGlobalMix()">🌎 Trending Mix</button>
+                <button class="category-pill" data-cuisine="Indian" onclick="loadCuisine('Indian')">🇮🇳 Indian Classics</button>
+                <button class="category-pill" data-cuisine="Italian" onclick="loadCuisine('Italian')">🇮🇹 Italian</button>
+                <button class="category-pill" data-cuisine="Chinese" onclick="loadCuisine('Chinese')">🇨🇳 Chinese</button>
+                <button class="category-pill" data-cuisine="Mexican" onclick="loadCuisine('Mexican')">🇲🇽 Mexican</button>
+                <button class="category-pill" data-cuisine="Japanese" onclick="loadCuisine('Japanese')">🇯🇵 Japanese</button>
+                <button class="category-pill" data-cuisine="Thai" onclick="loadCuisine('Thai')">🇹🇭 Thai</button>
+                <button class="category-pill" data-cuisine="Turkish" onclick="loadCuisine('Turkish')">🇹🇷 Turkish</button>
+            </div>
+
+            <div class="ingredient-section">
+                <p class="ingredient-heading">
+                    🇮🇳 POPULAR INDIAN INGREDIENTS — CLICK ANY:
+                </p>
+
+                <div class="categories ingredient-row">
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('chicken')">🍗 Chicken</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('paneer')">🧀 Paneer</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('dal')">🫘 Lentil (Dal)</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('fish')">🐟 Fish Curry</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('mutton')">🐑 Mutton Rogan</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('rice')">🍚 Biryani</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('cauliflower')">🥦 Gobi</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('eggplant')">🍆 Baingan</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('coconut')">🥥 Coconut Curry</button>
+                    <button class="ingredient-chip" onclick="quickSearchByIngredient('spinach')">🌿 Palak</button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Results Grid -->
-        <div id="results" class="results-grid">
-            <!-- Results will be displayed here -->
-        </div>
+        <main id="results" class="results-grid" aria-live="polite"></main>
+        <noscript><p class="error-message">Please enable JavaScript to use Spice Route.</p></noscript>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>Data provided by TheMealDB </p>
-        </div>
+        <footer class="footer">
+            <p>🌿 Spice Route • Recipes powered by TheMealDB API</p>
+        </footer>
     </div>
 
-    <!-- Recipe Modal -->
-    <div id="recipeModal" class="modal">
-        <div class="modal-content" id="modalContent">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <!-- Modal content will be loaded here -->
-        </div>
+    <div id="recipeModal" class="modal" aria-hidden="true">
+        <div class="modal-content" id="modalContent"></div>
     </div>
 
     <script src="script.js"></script>
