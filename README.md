@@ -1,5 +1,344 @@
-# 🍛 Spice Route ### *Discover Authentic Indian Flavors & Global Gems* [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML) [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS) [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) [![TheMealDB](https://img.shields.io/badge/TheMealDB-API-orange?style=for-the-badge)](https://www.themealdb.com/api.php) [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-brightgreen?style=for-the-badge&logo=github)](https://pages.github.com/) **A fully responsive, zero-dependency recipe discovery web app powered by the TheMealDB REST API.** Search by ingredient, filter by cuisine, and explore step-by-step recipes — with video tutorials embedded right inside. [🌐 Live Demo](https://kanikaagarwal006.github.io/REPO-NAME)  •  [🐛 Report Bug](https://github.com/kanikaagarwal006/REPO-NAME/issues)  •  [✨ Request Feature](https://github.com/kanikaagarwal006/REPO-NAME/issues) --- ## 📸 Screenshots ### 🏠 Homepage — Search & Discover ![Spice Route Homepage showing search bar, cuisine filters, ingredient chips and recipe cards in a warm Indian-themed layout](./spiceroute_home.png) --- ### 📋 Recipe Detail Modal — Ingredients, Instructions & Video ![Recipe detail modal showing ingredients grid, step-by-step instructions and embedded YouTube video tutorial](./spiceroute_modal.png) --- ### 📱 Mobile Responsive View ![Mobile view showing stacked layout with single-column recipe cards and full-width search controls](./spiceroute_mobile.png) --- ## ✨ Features | Feature | Description | |---|---| | 🔍 **Ingredient Search** | Type any ingredient (chicken, paneer, rice, coconut…) and discover matching recipes instantly | | 🇮🇳 **Indian Treasury** | Dedicated Indian recipe collection with smart filtering by cuisine area | | 🌍 **Global Feast** | Curated mix of recipes from 8 world cuisines rendered on load | | 🎲 **Surprise Me** | Fetches a completely random recipe — great for culinary adventures | | 🏷️ **Cuisine Filters** | One-click filters for Indian, Italian, Chinese, Mexican, Japanese, Thai & Turkish cuisines | | 🫘 **Quick Ingredient Chips** | 10 popular Indian ingredient shortcuts (Chicken, Paneer, Dal, Lentil, Mutton, Rice, Gobi, Baingan, Coconut, Palak) | | 📋 **Recipe Modal** | Full ingredient list with measures, step-by-step instructions, and embedded YouTube tutorial | | 🎬 **Video Tutorials** | Embedded YouTube iframe (privacy-enhanced mode via `youtube-nocookie.com`) | | 🗃️ **Smart Caching** | Indian recipes fetched once and cached — subsequent searches are instant | | ⚡ **Race Condition Guard** | Request-ID system ensures only the latest response renders — prevents stale UI | | 🛡️ **XSS-Safe Rendering** | All user and API text is HTML-escaped before insertion | | ♿ **Accessibility** | ARIA labels, keyboard navigation (`Enter` to open cards), and `aria-live` region for screen readers | | 📱 **Fully Responsive** | Adapts from wide desktop grids to single-column mobile layouts | | 🔄 **Loading States** | Animated spinner shown during API fetches; meaningful empty/error states displayed | --- ## 🛠️ Tech Stack ``` 📁 Pure Vanilla Stack — Zero frameworks, zero dependencies ├── HTML5 — Semantic markup, ARIA accessibility attributes ├── CSS3 — Custom properties, Grid, Flexbox, keyframe animations ├── JavaScript — ES2020 (async/await, optional chaining, Map, destructuring) └── TheMealDB API — Free open REST API for recipes (no key required) ``` | Technology | Usage | |---|---| | **HTML5** | Semantic layout: ``, ``, `
-`, ``, `` | | **CSS3** | Glass-morphism navbar, responsive grid, smooth hover transitions, `@keyframes` spinner & fade-up | | **Vanilla JavaScript (ES2020)** | `fetch`, `async/await`, `Promise.all`, `Map` for caching, regex XSS sanitisation | | **TheMealDB REST API** | `search.php`, `filter.php`, `lookup.php`, `random.php` endpoints | | **Google Fonts** | Inter (300–800 weight) for clean, modern typography | --- ## 🏗️ How It Works ``` User Action │ ▼ Search / Filter / Click │ ▼ Smart Search Pipeline: 1. Search by dish name ──► If Indian area match → Display ✅ 2. Filter by ingredient ──► Fetch details, check area → Display ✅ 3. Fallback: Cached Indian recipe list → Filter locally → Display ✅ 4. No match → Friendly "No recipes found" message ``` ### Key Architecture Decisions - **Request-ID guard** — Each new search increments a global `activeRequestId`. Before rendering, the response checks if its ID is still the current one — preventing race conditions when users click rapidly. - **Caching with `Map`** — Recipe details fetched by ID are stored in a `recipeCache` Map. Calling `getRecipeDetails(id)` a second time returns the cached `Promise` immediately. - **Indian recipe prefetch** — The `getIndianRecipes()` function downloads up to 30 Indian recipes on first use and caches them for the lifetime of the session. Subsequent ingredient searches scan this local list instead of making new API calls. - **Alias system** — `INGREDIENT_ALIASES` maps user inputs like `"dal"` → `["dal", "lentil", "lentils"]` so searches stay flexible and accurate. - **Whole-word matching** — `wordMatch()` uses `\b`-bounded regex so searching `"egg"` does not accidentally match `"eggplant"`. --- ## 📡 API Reference All endpoints use the **[TheMealDB Free API](https://www.themealdb.com/api.php)** (no API key required): | Endpoint | Used For | |---|---| | `search.php?s=` | Search recipes by dish name | | `filter.php?i=` | Filter recipes by ingredient | | `filter.php?a=Indian` | List all Indian recipes (summaries only) | | `lookup.php?i=` | Get full recipe details by ID | | `random.php` | Fetch a single random recipe | --- ## 📂 Project Structure ``` receipe-finder-app/ ├── index.html # App shell — layout, navbar, search section, modal skeleton ├── style.css # Design system — colors, typography, components, animations, responsive ├── script.js # All logic — API calls, caching, search pipeline, rendering, modal └── README.md # This file ``` --- ## 🚀 Run Locally No build step, no npm, no install required! ### Option 1 — Open directly ```bash # Just double-click index.html in Finder, or: open index.html ``` > ⚠️ Some browsers block fetch requests from `file://`. Use Option 2 if recipes don't load. ### Option 2 — Local HTTP server (recommended) ```bash # Using Python (comes pre-installed on macOS/Linux): python3 -m http.server 8080 # Then open: # http://localhost:8080 ``` ### Option 3 — VS Code Live Server Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension → Right-click `index.html` → **Open with Live Server** --- ## 🌐 Deploy on GitHub Pages ```bash # 1. Initialise git (skip if already done) git init # 2. Stage all files git add . # 3. Commit git commit -m "🍛 Initial commit — Spice Route recipe finder" # 4. Rename branch to main git branch -M main # 5. Add your GitHub remote (replace YOUR-USERNAME and REPO-NAME) git remote add origin https://github.com/YOUR-USERNAME/REPO-NAME.git # 6. Push git push -u origin main ``` Then in your GitHub repository: > **Settings** → **Pages** → **Source: Deploy from branch** → **Branch: `main` / `/ (root)`** → **Save** Your app will be live at: `https://YOUR-USERNAME.github.io/REPO-NAME/` --- ## 🎨 Design Highlights - **Color Palette** — Warm cream (`#FFF9F0`) background, vibrant orange (`#E67E22`) accents, deep brown text — inspired by Indian spices - **Glass-morphism Navbar** — `backdrop-filter: blur(12px)` with subtle border and shadow - **Gradient Logo** — Multi-stop CSS gradient from crimson to saffron to amber - **Animated Spinner** — CSS `@keyframes spin` with orange accent color - **Fade-up Hero** — `@keyframes fadeUp` animation on page load - **Hover Cards** — `translateY(-8px)` lift with enhanced shadow on recipe cards - **Indian Recipe Badge** — Tri-colour gradient (`#FF9933 → #138808`) for Indian recipes --- ## ♿ Accessibility - Semantic HTML (``, ``, ``, `
-`) - `aria-label` on all interactive elements - `aria-hidden` toggled on modal open/close - `aria-live="polite"` on results region for screen reader announcements - Full keyboard navigation — `Tab` to focus cards, `Enter` to open modal - `:focus-visible` outlines on all interactive elements - `loading="lazy"` on all recipe images --- ## 🔮 Possible Future Enhancements - [ ] Save/favourite recipes to `localStorage` - [ ] Dark mode toggle - [ ] Filter by dietary preference (vegetarian, vegan) - [ ] Share recipe via Web Share API - [ ] Print-friendly recipe view - [ ] Search history with auto-suggestions - [ ] Nutritional info display (if API supports) --- ## 👩‍💻 Author **Kanika Agarwal** [![GitHub](https://img.shields.io/badge/GitHub-kanikaagarwal006-181717?style=flat&logo=github)](https://github.com/kanikaagarwal006) --- ## 📄 License This project is open source under the [MIT License](LICENSE). Recipe data is provided by [TheMealDB](https://www.themealdb.com/) — please respect their terms of use. ---
-Made with ❤️ and a lot of 🌶️ *Spice Route — where every search leads to something delicious*
-]]>
+🍛 Spice Route
+Discover Authentic Indian Flavors & Global Gems
+
+<p align="center"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" /> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" /> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" /> <img src="https://img.shields.io/badge/TheMealDB-API-orange?style=for-the-badge" alt="TheMealDB API" /> <img src="https://img.shields.io/badge/GitHub_Pages-Deployed-brightgreen?style=for-the-badge&logo=github" alt="GitHub Pages" /> </p>
+
+<p align="center"> <strong>A fully responsive, zero-dependency recipe discovery web application powered by TheMealDB REST API.</strong> <br /> Search by ingredient, explore cuisines from around the world, discover authentic Indian recipes, and follow step-by-step cooking instructions with embedded video tutorials. </p>
+
+<p align="center"> 🌐 <a href="https://kanikaagarwal006.github.io/REPO-NAME">Live Demo</a> &nbsp;•&nbsp; 🐛 <a href="https://github.com/kanikaagarwal006/REPO-NAME/issues">Report a Bug</a> &nbsp;•&nbsp; ✨ <a href="https://github.com/kanikaagarwal006/REPO-NAME/issues">Request a Feature</a> </p>
+
+📑 Table of Contents
+
+📸 Screenshots
+✨ Features
+🛠️ Tech Stack
+🏗️ How It Works
+📡 API Reference
+📂 Project Structure
+🚀 Getting Started
+🌐 Deployment
+🎨 Design Highlights
+♿ Accessibility
+🔮 Future Enhancements
+👩‍💻 Author
+📄 License
+📸 Screenshots
+
+🏠 Homepage — Search & Discover
+
+Explore delicious recipes with ingredient search, cuisine filters, and quick ingredient shortcuts.
+
+!Spice Route Homepage
+
+📋 Recipe Details — Ingredients & Instructions
+
+View complete ingredient lists, cooking measurements, step-by-step instructions, and video tutorials.
+
+!Recipe Detail Modal
+
+📱 Fully Responsive Mobile View
+
+Enjoy a seamless recipe discovery experience across desktops, tablets, and smartphones.
+
+!Mobile Responsive View
+
+✨ Features
+
+Spice Route brings together everything you need to discover your next favorite meal.
+
+
+Feature	Description
+🔍 Ingredient Search	Find recipes using ingredients like chicken, paneer, rice, coconut, and more.
+🇮🇳 Indian Treasury	Explore authentic Indian recipes with cuisine-area filtering.
+🌍 Global Feast	Discover recipes from 8 different world cuisines.
+🎲 Surprise Me	Get a random recipe whenever you're feeling adventurous.
+🏷️ Cuisine Filters	Filter recipes by Indian, Italian, Chinese, Mexican, Japanese, Thai, and Turkish cuisines.
+🫘 Quick Ingredient Chips	Instantly search 10 popular Indian ingredients.
+📋 Recipe Details Modal	Explore ingredients, measurements, cooking instructions, and recipe details.
+🎬 Video Tutorials	Watch embedded YouTube cooking tutorials using privacy-enhanced embeds.
+🗃️ Smart Caching	Cache recipe data to reduce unnecessary API requests.
+⚡ Race Condition Protection	Ensure only the latest search response updates the interface.
+🛡️ XSS-Safe Rendering	Escape user-generated and API-provided text before HTML insertion.
+♿ Accessibility Support	ARIA labels, keyboard navigation, and screen-reader announcements.
+📱 Responsive Design	Optimized layouts for mobile, tablet, and desktop screens.
+🔄 Loading & Error States	Animated loading indicators and helpful empty/error messages.
+🫘 Quick Ingredient Shortcuts
+
+Chicken • Paneer • Dal • Lentil • Mutton • Rice • Gobi • Baingan • Coconut • Palak
+
+🛠️ Tech Stack
+
+Built entirely with vanilla technologies — no frameworks, no dependencies, and no build tools!
+
+
+Technology	Purpose
+HTML5	Semantic structure and accessible markup
+CSS3	Responsive layouts, animations, Grid, Flexbox, and custom styling
+JavaScript (ES2020)	API integration, asynchronous operations, caching, and application logic
+TheMealDB API	Free REST API for recipe discovery and details
+Google Fonts	Inter typography for a clean, modern interface
+GitHub Pages	Free static website hosting
+Core Technologies
+
+
+text
+📁 Spice Route
+│
+├── HTML5
+│   └── Semantic markup and accessibility
+│
+├── CSS3
+│   └── Grid, Flexbox, animations and responsive design
+│
+├── Vanilla JavaScript (ES2020)
+│   └── Fetch API, async/await, Promise.all and Map
+│
+└── TheMealDB REST API
+    └── Recipe search, filtering and details
+🏗️ How It Works
+
+Spice Route follows a smart search pipeline to provide relevant recipes while minimizing unnecessary API requests.
+
+🔄 Search Workflow
+
+
+text
+          👤 User Action
+                |
+                ▼
+       Search / Filter / Click
+                |
+                ▼
+        Smart Search Pipeline
+                |
+       ┌────────┼─────────┐
+       ▼        ▼         ▼
+   Dish Name  Ingredient  Cuisine
+    Search     Search     Filter
+       |        |          |
+       └────────┼──────────┘
+                ▼
+        Indian Recipe Check
+                |
+       ┌────────┴────────┐
+       ▼                 ▼
+   Match Found       No Match
+       |                 |
+       ▼                 ▼
+  Display Recipes   Cached Recipe
+                         Fallback
+                            |
+                    ┌───────┴───────┐
+                    ▼               ▼
+                 Results       No Results
+🧠 Key Architecture Decisions
+
+1. Request-ID Guard
+
+Each search increments a global activeRequestId. Before rendering, the application verifies that the response belongs to the latest request, preventing outdated results from appearing.
+
+2. Smart Caching with Map
+
+Recipe details are stored in a JavaScript Map using recipe IDs as keys. Cached promises are reused to avoid repeated API requests.
+
+3. Indian Recipe Prefetching
+
+The getIndianRecipes() function fetches up to 30 Indian recipes on first use and caches them for subsequent searches.
+
+4. Ingredient Alias System
+
+The INGREDIENT_ALIASES object maps alternative ingredient names to improve search flexibility.
+
+For example:
+
+
+javascript
+{
+  dal: ["dal", "lentil", "lentils"]
+}
+5. Whole-Word Matching
+
+The wordMatch() function uses word-boundary regular expressions to avoid incorrect matches.
+
+For example, searching for egg does not accidentally match eggplant.
+
+📡 API Reference
+
+Spice Route uses the free TheMealDB REST API.
+
+No API key is required for the endpoints used in this project.
+
+
+Endpoint	Purpose
+search.php?s=	Search recipes by dish name
+filter.php?i=	Filter recipes by ingredient
+filter.php?a=Indian	Retrieve Indian recipe summaries
+lookup.php?i=	Retrieve complete recipe details
+random.php	Fetch a random recipe
+🔗 API Documentation: https://www.themealdb.com/api.php
+
+📂 Project Structure
+
+
+text
+recipe-finder-app/
+│
+├── index.html       # Application structure and modal skeleton
+├── style.css        # Styling, layouts, animations and responsive design
+├── script.js        # API integration, caching and application logic
+├── README.md        # Project documentation
+│
+├── spiceroute_home.png
+├── spiceroute_modal.png
+└── spiceroute_mobile.png
+🚀 Getting Started
+
+Want to run Spice Route locally? Follow these simple steps.
+
+Prerequisites
+
+A modern web browser.
+Python 3 (recommended for running a local server), or VS Code with Live Server.
+1. Clone the Repository
+
+
+bash
+git clone https://github.com/kanikaagarwal006/REPO-NAME.git
+2. Navigate to the Project Directory
+
+
+bash
+cd REPO-NAME
+3. Run the Application
+
+Option 1: Open Directly
+
+Open index.html in your browser.
+
+Note: Some browsers restrict API requests from file:// URLs. If recipes don't load, use a local HTTP server instead.
+Option 2: Python HTTP Server (Recommended)
+
+
+bash
+python3 -m http.server 8080
+Open your browser and visit:
+
+
+text
+http://localhost:8080
+Option 3: VS Code Live Server
+
+Install the Live Server extension.
+Open the project folder in VS Code.
+Right-click index.html.
+Select Open with Live Server.
+🌐 Deployment
+
+Spice Route can be deployed for free using GitHub Pages.
+
+Step 1: Initialize Git
+
+
+bash
+git init
+Step 2: Add Project Files
+
+
+bash
+git add .
+Step 3: Commit Changes
+
+
+bash
+git commit -m "🍛 Initial commit - Spice Route"
+Step 4: Set Main Branch
+
+
+bash
+git branch -M main
+Step 5: Connect GitHub Repository
+
+
+bash
+git remote add origin https://github.com/YOUR-USERNAME/REPO-NAME.git
+Step 6: Push Your Code
+
+
+bash
+git push -u origin main
+Step 7: Enable GitHub Pages
+
+Open your GitHub repository.
+Navigate to Settings → Pages.
+Under Build and deployment, select Deploy from a branch.
+Choose the main branch.
+Select / (root) as the folder.
+Click Save.
+🎉 Your application will be available at:
+
+
+text
+https://YOUR-USERNAME.github.io/REPO-NAME/
+🎨 Design Highlights
+
+Spice Route combines a warm, Indian-inspired color palette with a modern and responsive interface.
+
+
+Element	Design
+🎨 Background	Warm cream #FFF9F0
+🧡 Primary Accent	Vibrant orange #E67E22
+🤎 Typography	Deep brown
+🌈 Logo	Crimson-to-saffron gradient
+🪟 Navbar	Glassmorphism with backdrop-filter: blur(12px)
+🍽️ Recipe Cards	Smooth hover transitions and elevated shadows
+🇮🇳 Indian Badge	Tricolour-inspired gradient
+⏳ Loading Spinner	Animated CSS keyframes
+UI & Animation Features
+
+Clean and modern navigation bar.
+Smooth hover effects on recipe cards.
+Animated loading spinner.
+Fade-up hero section animation.
+Responsive CSS Grid and Flexbox layouts.
+Consistent spacing, typography, and colors.
+♿ Accessibility
+
+Accessibility is an important part of Spice Route.
+
+The application includes:
+
+Semantic HTML elements.
+ARIA labels for interactive components.
+Keyboard navigation using Tab and Enter.
+aria-live="polite" for dynamic search results.
+Proper modal accessibility attributes.
+Visible :focus-visible outlines.
+Lazy-loaded recipe images.
+🔮 Future Enhancements
+
+Here are some features planned for future versions:
+
+❤️ Save and favorite recipes using LocalStorage.
+🌙 Dark mode toggle.
+🥗 Vegetarian and vegan dietary filters.
+📤 Share recipes using the Web Share API.
+🖨️ Print-friendly recipe pages.
+🔎 Search history and autocomplete suggestions.
+🥑 Nutritional information display.
+👩‍💻 Author
+
+Kanika Agarwal
+
+Passionate about building interactive, user-friendly web applications using modern web technologies.
+
+<p> <a href="https://github.com/kanikaagarwal006"> <img src="https://img.shields.io/badge/GitHub-kanikaagarwal006-181717?style=for-the-badge&logo=github" alt="GitHub Profile" /> </a> </p>
+
+📄 License
+
+This project is open source and available under the MIT License.
+
+See the LICENSE file for more details.
+
+Recipe data is provided by TheMealDB. Please respect their terms of use.
+
+<p align="center"> Made with ❤️ and a lot of 🌶️ <br /> <strong>Spice Route — Where Every Search Leads to Something Delicious!</strong> </p>
